@@ -1,6 +1,7 @@
 # %%
 # IMPORT Thư viện
 #  pip install numpy pandas jupyter notebook openpyxl xlrd
+# Python: https://www.python.org/ftp/python/3.10.7/python-3.10.7-amd64.exe
 import pandas as pd
 import os
 import openpyxl
