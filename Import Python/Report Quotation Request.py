@@ -68,12 +68,6 @@ Data_Request['Giá vốn chênh lệch %'] = np.around((Data_Request['Unit Price
 Data_Request=Data_Request.iloc[:,[0,1,2,3,4,5,6,15,7,16,8,9,10,11,12,13,14]]
 
 # %%
-
 # EXPORT FILE DATA
 with pd.ExcelWriter('Report Quotation Request.xlsx') as writer:
     Data_Request.to_excel(writer, sheet_name='Data')
-  
-
-
-
-
