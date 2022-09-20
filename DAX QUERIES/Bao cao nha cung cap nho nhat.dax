@@ -1,0 +1,20 @@
+﻿EVALUATE
+//EVALUATE DataPrice2nd
+//EVALUATE DataPrice
+//EVALUATE INPUT
+//EVALUATE
+//FILTER('Nhap Xuat Ton','Nhap Xuat Ton'[ID]="04465-YZZQ6-82")
+//FILTER('Mua hang','Mua hang'[ID]="04465-YZZQ6-82")
+//FILTER('Mua hang Min','Mua hang Min'[ID]="04465-YZZQ6-82")
+//FILTER('Nhap Xuat Ton','Nhap Xuat Ton'[ID]="31250-0K320")
+//FILTER(DataPrice,DataPrice[ID]="04371-0K110")
+//FILTER('Nhap Xuat Ton','Nhap Xuat Ton'[ID]="04371-0K110")
+//FILTER(DataPrice,DataPrice[ID]="04465-YZZQ6-82")
+//FILTER('Mua hang Min','Mua hang Min'[ID]="04465-YZZQ6-82")
+//FILTER('Mua hang','Mua hang'[ID]="04465-YZZQ6-82")
+//FILTER(DataPrice,DataPrice[ID]="04465-YZZQ6-82")
+//FILTER('Ban hang Min','Ban hang Min'[ID]="04465-YZZQ6-82")
+//FILTER(INPUT,INPUT[ID]="04111-BZ109")
+//FILTER(DataPrice,DataPrice[ID]="04111-BZ109")
+//FILTER(DataPrice2nd,DataPrice2nd[ID]="04111-BZ109")
+FILTER(DataPrice,DataPrice[ID]="48510-8Z244")

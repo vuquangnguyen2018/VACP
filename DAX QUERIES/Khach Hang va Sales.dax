@@ -1,0 +1,12 @@
+﻿DEFINE 
+	MEASURE FACT_Sales[Total Sales] = 
+		SUM(FACT_Sales[Thành tiền])
+//EVALUATE
+//ADDCOLUMNS(
+//		VALUES(FACT_Sales[ID Khách hàng]), "Total Sales", [Total Sales])
+//		
+//
+
+// -> Single Output
+EVALUATE
+{[Total Sales]}

@@ -1,0 +1,63 @@
+﻿//EVALUATE 
+////FILTER(INPUT,INPUT[ID]="D114XS")
+////FILTER('Nhap Xuat Ton','Nhap Xuat Ton'[ID]="T24NC50WB")
+////FILTER(DataPrice,DataPrice[ID]="T24NC50WB")
+////VALUES('Mua hang Min')
+////VALUES('DataPrice')
+//// MIN ID = 04003-45450; MIN = 19500000; Latest 22700000
+////FILTER('Mua hang','Mua hang'[ID]="04009-86175")
+////FILTER('Mua hang Min','Mua hang Min'[ID]="04009-86175")
+////VALUES('Mua hang Gan')
+////FILTER('Mua hang Gan',CONTAINSSTRING('Mua hang Gan'[ID Khach hang],"NK-"))
+////FILTER('Mua hang PriceMin',
+////FILTER(DataPrice,DataPrice[ID]="16400-0L150")
+//FILTER('Nhap Xuat Ton','Nhap Xuat Ton'[Tổng xuất]>0)
+//
+
+//EVALUATE 'Nhap Xuat Ton'
+//EVALUATE 
+//FILTER('Nhap Xuat Ton','Nhap Xuat Ton'[ID]="16400-0L150")
+
+//47050-60033: Giá vốn 38095894
+//16400-0L150: 5096337
+
+
+//EVALUATE 
+//DataPrice
+//FILTER(DataPrice,DataPrice[ID]="16400-0L150")
+//FILTER('Nhap Xuat Ton','Nhap Xuat Ton'[ID]="16400-0L150")
+//FILTER('Mua hang Gan','Mua hang Gan'[ID]="04009-86175")
+//FILTER('Mua hang PriceMin','Mua hang PriceMin'[ID]="04009-86175")
+//FILTER('Mua hang','Mua hang'[ID]="04152-31080")
+//FILTER('Mua hang','Mua hang'[Ngày].[Year]=2022)
+//04009-86175 , 636800-> Giá gần = Giá Min 636800
+//04111-0C210
+//FILTER('Mua hang',AND('Mua hang'[ID]="04111-0C210",'Mua hang'[Ngày].[Year]=2022 ))
+//04111-0C210, Giá gần = 2269032; Giá MIN=1937462
+//FILTER('Mua hang Gan','Mua hang Gan'[ID]="04111-0C210")
+//FILTER('Mua hang PriceMin','Mua hang PriceMin'[ID]="04111-0C210") 
+//04111-0C210, Giá gần 9/13/2022   = 2269032; Giá MIN 2/26/2022 =1937462
+//FILTER('Mua hang Gan','Mua hang Gan'[ID]="04111-0C210")
+
+//-------------Lọc Các NK Năm 2022, có Giá gần nhất
+//EVALUATE
+//FILTER('Mua hang Gan',
+//	AND('Mua hang Gan'[Năm nhập]=2022,
+//	CONTAINSSTRING('Mua hang Gan'[ID Khach hang],"NK-")))
+//
+//-------------- Lọc Các nhà cung cấp Năm 2022, có giá nhỏ nhất
+//EVALUATE 
+//FILTER('Mua hang PriceMin','Mua hang PriceMin'[Năm nhập]=2022)
+
+
+// ------------ Lọc các nhà cung cấp năm 2022, có giá gần đây và nhỏ nhất khác nhau
+EVALUATE
+FILTER('Mua hang Gan',
+	AND('Mua hang Gan'[Năm nhập]=2022,AND('Mua hang Gan'[Đơn giá nhập]>0,
+		'Mua hang Gan'[Đơn giá nhập] <> 'Mua hang Gan'[Đơn giá nhập MIN])))
+	
+
+// ---------- Lọc các nhà cung cấp năm 2022, có giá gần đây và nhỏ nhất  
+//EVALUATE
+//FILTER('Mua hang Gan','Mua hang Gan'[Năm nhập]=2022)
+	

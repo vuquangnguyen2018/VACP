@@ -1,0 +1,99 @@
+// # FULL CÔNG THỨC TÍNH 
+
+Unit Price VND = 'NSX Unit Price Min'[Unit Price]*24000*1.13
+Giá vốn = [Giá trị xuất]/[Tổng xuất]*1.05
+ Chênh lệch Giá vốn = DIVIDE(('NSX Unit Price Min'[Unit Price VND]-'NSX Unit Price Min'[Giá vốn]),'NSX Unit Price Min'[Giá vốn],0)
+
+
+Tổng nhập chi tiết = RELATED('Mua hang Min'[Tổng nhập])
+Tổng xuất = RELATED('Nhap Xuat Ton'[Tổng xuất])
+Tổng tồn = RELATED('Gia ban'[Tổng tồn])
+
+Nhà cung cấp = RELATED('Mua hang Min'[ID Nhà cung cấp])
+Ngày nhập = RELATED('Mua hang Min'[Ngày nhập])
+Đơn giá nhập = RELATED('Mua hang Min'[Đơn giá nhập])
+
+
+Giá mặc cả = IF('NSX Unit Price Min'[Giá vốn]<'NSX Unit Price Min'[Đơn giá nhập],
+                'NSX Unit Price Min'[Giá vốn]*(1-0.05),
+                    IF('NSX Unit Price Min'[Chênh lệch Giá vốn]>=0.1,
+                        'NSX Unit Price Min'[Đơn giá nhập]*(1-0.05),
+                        'NSX Unit Price Min'[Đơn giá nhập]))
+Giá mặc cả USD = 'NSX Unit Price Min'[Giá mặc cả]/24000/(1+0.13) 
+Giá vốn mới = 'NSX Unit Price Min'[Giá mặc cả USD]*24000 
+Chênh lệch mới = ('NSX Unit Price Min'[Giá vốn mới]/'NSX Unit Price Min'[Giá vốn]-1)
+
+Nhập thêm = IF('NSX Unit Price Min'[Tổng xuất]>'NSX Unit Price Min'[Tổng tồn],"Nhập thêm","Không")
+
+
+/// # MEASURE CALCULATION
+Tổng sản phẩm cần nhập = COUNT('NSX Unit Price Min'[ID] )   
+Trung bình đơn giá mặc cả USD = AVERAGE('NSX Unit Price Min'[Giá mặc cả USD])
+Tổng giá trị nhập = SUMX('NSX Unit Price Min','NSX Unit Price Min'[Tổng nhập]*'NSX Unit Price Min'[Đơn giá nhập])
+
+///# 
+
+
+{
+    Chênh lệch Giá vốn = DIVIDE(('Data'[Unit Price VND]-'Data'[Giá vốn]),'Data'[Giá vốn],0)
+    Chênh lệch mới = ('Data'[Giá vốn mới]/'Data'[Giá vốn]-1)
+    Giá mặc cả = IF('Data'[Giá vốn]<'Data'[Đơn giá nhập],
+                'Data'[Giá vốn]*(1-0.05),
+                    IF('Data'[Chênh lệch Giá vốn]>=0.1,
+                        'Data'[Đơn giá nhập]*(1-0.05),
+                        'Data'[Đơn giá nhập]))
+    Giá mặc cả USD = 'Data'[Giá mặc cả]/24000/(1+0.13) 
+    Giá vốn = DIVIDE('Data'[Giá trị xuất],'Data'[Tổng xuất],0)
+    Giá vốn mới = 'Data'[Giá mặc cả USD]*24000 
+    Unit Price VND = 'Data'[Unit Price]*24000*1.13    
+
+
+}
+
+
+
+{
+    Giá vốn = DIVIDE(RELATED('Nhap Xuat Ton'[Giá trị xuất]),RELATED('Nhap Xuat Ton'[Tổng xuất]),0)
+    Unit Price VND = 'DataPrice'[Unit Price]*24000*1.13 
+    Giá nhập = RELATED('Mua hang Min'[Đơn giá nhập])
+    Giá bán = RELATED('Ban hang Min'[Đơn giá bán])
+}
+
+// THUẬT TOÁN POWER QUERIES 
+
+// - BÁN HÀNG MIN
+let
+    Source = #"Ban Hang",
+    #"Filtered Rows" = Table.SelectRows(Source, each [Giá bán giảm] <> null and [Giá bán giảm] <> ""),
+    #"Grouped Rows" = Table.Group(#"Filtered Rows", {"ID"}, {{"Giá giảm MIN", each List.Min([Giá bán giảm]), type nullable number}, {"Ngày bán gần đây", each List.Max([Ngày]), type nullable date}}),
+    #"Changed Type" = Table.TransformColumnTypes(#"Grouped Rows",{{"Giá giảm MIN", Int64.Type}}),
+    #"Merged Queries" = Table.NestedJoin(#"Changed Type", {"ID", "Ngày bán gần đây"}, #"Ban Hang", {"ID", "Ngày"}, "Ban Hang", JoinKind.Inner),
+    #"Expanded Ban Hang" = Table.ExpandTableColumn(#"Merged Queries", "Ban Hang", {"ID Khach hang", "Đơn giá bán"}, {"ID Khach hang", "Đơn giá bán"}),
+    #"Removed Duplicates" = Table.Distinct(#"Expanded Ban Hang", {"ID"}),
+    #"Filtered Rows1" = Table.SelectRows(#"Removed Duplicates", each [Giá giảm MIN] <> null and [Giá giảm MIN] <> "")
+in
+    #"Filtered Rows1"
+
+/// MUA HÀNG MIN
+let 
+    Source = #"Mua hang",
+    #"Grouped Rows" = Table.Group(Source, {"ID"}, {{"Ngày nhập", each List.Max([Ngày]), type nullable date}, {"Đơn giá MIN", each List.Min([Đơn giá]), type nullable number}}),
+    #"Merged Queries" = Table.NestedJoin(#"Grouped Rows", {"ID", "Ngày nhập"}, #"Mua hang", {"ID", "Ngày"}, "Mua hang", JoinKind.Inner),
+    #"Expanded Mua hang" = Table.ExpandTableColumn(#"Merged Queries", "Mua hang", {"ID Nhà cung cấp", "Đơn giá", "Số lượng"}, {"ID Nhà cung cấp", "Đơn giá", "Số lượng"}),
+    #"Removed Duplicates" = Table.Distinct(#"Expanded Mua hang", {"ID"}),
+    #"Renamed Columns" = Table.RenameColumns(#"Removed Duplicates",{{"Số lượng", "Tổng nhập"}, {"Đơn giá", "Đơn giá nhập"}})
+in
+    #"Renamed Columns"
+
+// NSX MIN
+let
+    Source = INPUT,
+    #"Grouped Rows" = Table.Group(Source, {"ID", "Nhà sản xuất"}, {{"Unit Price Min", each List.Min([Unit price]), type nullable number}}),
+    #"Merged Queries" = Table.NestedJoin(#"Grouped Rows", {"ID", "Unit Price Min"}, INPUT, {"ID", "Unit price"}, "INPUT", JoinKind.LeftOuter),
+    #"Expanded INPUT" = Table.ExpandTableColumn(#"Merged Queries", "INPUT", {"ID Item", "Description"}, {"ID Item", "Description"}),
+    #"Reordered Columns" = Table.ReorderColumns(#"Expanded INPUT",{"ID", "ID Item", "Description", "Unit Price Min"}),
+    #"Changed Type" = Table.TransformColumnTypes(#"Reordered Columns",{{"Unit Price Min", Int64.Type}}),
+    #"Renamed Columns" = Table.RenameColumns(#"Changed Type",{{"Unit Price Min", "Unit Price"}})
+in
+    #"Renamed Columns"
+
