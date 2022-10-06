@@ -1,0 +1,13 @@
+﻿DEFINE
+	COLUMN Data_PriceLatest[Discount %]=
+		IF(Data_PriceLatest[Đơn giá bán gần đây]*Data_PriceLatest[Giá giảm gần đây]=0,0,ROUND(
+				100*(1-DIVIDE(Data_PriceLatest[Giá giảm gần đây],Data_PriceLatest[Đơn giá bán gần đây],0)),2))
+	COLUMN Data_PriceLatest[DiffPriceLatestMin]=Data_PriceLatest[Giá giảm gần đây]-Data_PriceLatest[Giá giảm Min]
+	MEASURE Data_PriceLatest[DiscountAvg] = AVERAGEX(Data_PriceLatest,Data_PriceLatest[Discount %]
+
+		
+//EVALUATE
+//FILTER(Data_PriceLatest,
+//	Data_PriceLatest[Discount %] > 0)
+ 
+

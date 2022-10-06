@@ -1,12 +1,24 @@
 ﻿DEFINE 
 	MEASURE FACT_Sales[Total Sales] = 
 		SUM(FACT_Sales[Thành tiền])
+DEFINE
+	MEASURE FACT_Sales[Avg Sales Month] =
+		AVERAGEX(
+			VALUES(FACT_Sales[Ngày].[Month]),
+			[Total Sales])
 //EVALUATE
 //ADDCOLUMNS(
 //		VALUES(FACT_Sales[ID Khách hàng]), "Total Sales", [Total Sales])
 //		
 //
+//
+//// -> Single Output
+//EVALUATE
+//{[Total Sales]}
 
-// -> Single Output
-EVALUATE
-{[Total Sales]}
+EVALUATE 
+SUMMARIZE(FACT_Sales ,
+	DIM_Date[Date].[Month],
+	"Tổng doanh số", [Total Sales],
+	"Trung bình doanh số tháng", [Avg Sales Month]
+	)

@@ -1,3 +1,35 @@
+// Công thức mới
+
+Giá vốn = VAR TransCost = 0.05
+RETURN (1+TransCost)*DIVIDE('Nhap Xuat Ton'[Giá trị xuất],'Nhap Xuat Ton'[Tổng xuất],0)
+
+// Công thức tính giá vốn trên EXCEL: =IFERROR(IF(L7>0,L7/K7,IF(J7>0,J7/I7,IF(H7>0,H7/G7))),0)*(1+15%)
+
+Giá vốn = VAR SpecialCost = 0.12
+RETURN IF('Nhap Xuat Ton'[Giá trị xuất]>0,
+            (1+SpecialCost)*DIVIDE('Nhap Xuat Ton'[Giá trị xuất],'Nhap Xuat Ton'[Tổng xuất],0),
+                IF('Nhap Xuat Ton'[Giá trị đầu kỳ]>0,
+                     (1+SpecialCost)*DIVIDE('Nhap Xuat Ton'[Giá trị đầu kỳ],'Nhap Xuat Ton'[Tổng đầu kỳ],0),
+                           (1+SpecialCost)*DIVIDE('Nhap Xuat Ton'[Giá trị nhập],'Nhap Xuat Ton'[Tổng nhập],0)))
+
+Unit Price VND = VAR USDVND = 23700.00 
+         VAR TotalCost = 0.05+0.2
+         RETURN [Unit Price]*USDVND*(1+TotalCost)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // # FULL CÔNG THỨC TÍNH 
 
 Unit Price VND = 'NSX Unit Price Min'[Unit Price]*24000*1.13

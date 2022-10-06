@@ -15,18 +15,12 @@ Doanh số YTM = CALCULATE(FACT_Sales[Tổng doanh số],DATESYTD(FACT_Sales[DIM
 
 Rank Sales by Categories = RANKX(ALL(FACT_Sales[Mã nhóm]),FACT_Sales[Tổng doanh số])
 Rank Sales by Customer = RANKX(ALL(FACT_Sales[Mã Khách hàng]),FACT_Sales[Tổng doanh số])
-
+//------------------ Sale MoM------------------
 Sale MoM % = DIVIDE(FACT_Sales[Tổng doanh số]-FACT_Sales[Sales last month],FACT_Sales[Sales last month]) 
-Sale YoY % = DIVIDE(FACT_Sales[Doanh số YTM]-FACT_Sales[Sales last year],FACT_Sales[Sales last year]) 
+Sales current month = CALCULATE(SUM('FACT_Sales'[Thành tiền]),DATESMTD('DIM_Date'[Date]))       
+Sales last month = CALCULATE(SUM('FACT_Sales'[Thành tiền]),PREVIOUSMONTH('DIM_Date'[Date]))   
 
-Sales current month = CALCULATE([Tổng doanh số],PARALLELPERIOD('DIM_Date'[Date],0,MONTH ))
-Sales last month = CALCULATE([Tổng doanh số],PARALLELPERIOD('DIM_Date'[Date],-1,MONTH ))
 
-Sales last year = CALCULATE([Tổng doanh số],PARALLELPERIOD('DIM_Date'[Date],-1,YEAR ))
-
-Sales last year = CALCULATE([Tổng doanh số],PARALLELPERIOD('DIM_Date'[Date],-1,YEAR ))
-Tổng doanh số tháng trước = CALCULATE(FACT_Sales[Tổng doanh số],DATEADD('DIM_Date'[Date],-1,YEAR))
-Tổng Đơn hàng trên tháng = CALCULATE(COUNT(FACT_Sales[ID]),DATESMTD('DIM_Date'[Date]))
 
 // RANK CUSTOMER 
 
@@ -36,6 +30,17 @@ Class_Customer = IF('Rank Customer'[RANK Customer]>=100,"C",
                     IF('Rank Customer'[RANK Customer]>=60,"B",
                         IF('Rank Customer'[RANK Customer]>=20,"A",
                             IF('Rank Customer'[RANK Customer]>=10,"A+","VIP"))))
+//- --------------- Thứ ngày
+Thứ = WEEKDAY('DIM_Date'[Date],1)
+Thứ ngày = SWITCH('DIM_Date'[Thứ],
+            1,"Chủ nhật",
+            2,"Thứ hai",
+            3,"Thứ ba",
+            4,"Thứ tư",
+            5,"Thứ năm",
+            6,"Thứ sáu",
+            7,"Thứ bảy")
+
 
 
 // # RELATIONSHIP

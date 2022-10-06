@@ -50,14 +50,83 @@
 //FILTER('Mua hang PriceMin','Mua hang PriceMin'[Năm nhập]=2022)
 
 
-// ------------ Lọc các nhà cung cấp năm 2022, có giá gần đây và nhỏ nhất khác nhau
-EVALUATE
-FILTER('Mua hang Gan',
-	AND('Mua hang Gan'[Năm nhập]=2022,AND('Mua hang Gan'[Đơn giá nhập]>0,
-		'Mua hang Gan'[Đơn giá nhập] <> 'Mua hang Gan'[Đơn giá nhập MIN])))
-	
-
+// ---------- Lọc các nhà cung cấp năm 2022, có giá gần đây và nhỏ nhất khác nhau
+//EVALUATE
+//FILTER('Mua hang Gan',
+//	AND('Mua hang Gan'[Năm nhập]=2022,AND('Mua hang Gan'[Đơn giá nhập]>0,
+//		'Mua hang Gan'[Đơn giá nhập] <> 'Mua hang Gan'[Đơn giá nhập MIN])))
+//	
+//
 // ---------- Lọc các nhà cung cấp năm 2022, có giá gần đây và nhỏ nhất  
 //EVALUATE
 //FILTER('Mua hang Gan','Mua hang Gan'[Năm nhập]=2022)
 	
+//EVALUATE 
+////FILTER('Mua hang PriceMin','Mua hang PriceMin'[Năm nhập]=2022)
+////Ngày nhập gần nhất 04111-0C210	9/13/2022 12:00:00 AM	NK-LED	2269032	17
+//
+////FILTER('Mua hang',AND('Mua hang'[ID]="04111-0C210",'Mua hang'[Ngày].[Year]=2022))
+////FILTER('Mua hang',
+////	AND('Mua hang'[Ngày].[Year]=2022, 
+////	'Mua hang'[ID]="04111-0C210"))
+////FILTER('Mua hang PriceMin','Mua hang PriceMin'[ID]="04111-0C210")
+////Ngày nhập gần 04111-0C210	NK-LED	2269032	17	9/13/2022 12:00:00 A
+////Ngày nhập MIN 04111-0C210	NK-TS	1937462	8	2/26/2022 12:00:00 AM
+//'Mua hang PriceMinYear'
+//
+
+//
+//EVALUATE
+//FILTER('Mua hang Year 2022 PriceMin','Mua hang Year 2022 PriceMin'[ID]="04111-0C210")
+//// Ngày mua gần nhất ;   Nhà cung cấp gần nhất;  Đơn giá mua gần nhất; Tổng nhập;
+//// Ngày mua nhỏ nhất ;   Nhà cung cấp nhỏ nhất;  Đơn giá mua nhỏ nhất; Tổng nhập;
+//// NK: Ngày mua gần nhất ;   Nhà cung cấp gần nhất;  Đơn giá mua gần nhất; Tổng nhập;
+//// NK: Ngày mua nhỏ nhất ;   Nhà cung cấp nhỏ nhất;  Đơn giá mua nhỏ nhất; Tổng nhập;
+//EVALUATE
+//FILTER('Mua hang','Mua hang'[ID]="16620-31021")
+
+//Gần nhất 16620-31021	HTAUTOHN	9/21/2022 12:00:00 AM	2715000	1
+//MIN 16620-31021	NK-TS	3/29/2022 12:00:00 AM	2118199	1
+
+//EVALUATE
+////FILTER('Mua hang Latest','Mua hang Latest'[ID]="16620-31021")
+//FILTER('Mua hang Latest', AND(
+//	'Mua hang Latest'[Năm nhập]=2022
+//	,'Mua hang Latest'[ID] = "16620-31021"
+//	))
+
+/// --- LỌC LATEST NĂM 2022; Unit Price
+ 
+//EVALUATE
+//FILTER('Mua hang Latest', 
+//	'Mua hang Latest'[Năm nhập]=2022
+//	)
+
+//------ LỌC NK với Giá gần nhất và nhỏ nhất ; Year 20-22
+
+//EVALUATE
+//FILTER('Mua hang PriceMin',	CONTAINSSTRING('Mua hang PriceMin'[ID Khach hang],"NK-"))
+//FILTER('Mua hang Latest',CONTAINSSTRING('Mua hang Latest'[ID Khach hang],"NK-"))
+
+//EVALUATE
+//FILTER('Mua hang Latest',AND(
+//	CONTAINSSTRING('Mua hang Latest'[ID Khach hang],"NK-"),
+//	'Mua hang Latest'[ID]="04111-0P065")) 
+//	
+
+EVALUATE
+//FILTER('Mua hang Latest',AND('Mua hang Latest'[ID]="04111-0C210",CONTAINSSTRING('Mua hang Latest'[ID Khach hang],"NK-")))
+FILTER('Mua hang PriceMin',AND('Mua hang PriceMin'[ID]="04111-0C210",CONTAINSSTRING('Mua hang PriceMin'[ID Khach hang],"NK-")))
+//FILTER('Mua hang',CONTAINSSTRING('Mua hang'[ID Khach hang],"NK-"))
+//FILTER('Mua hang','Mua hang'[ID]="04111-0P065")
+//  Latest: 04111-0C210	9/13/2022 12:00:00 AM	NK-LED	2269032	17
+// MIN : 04111-0C210	2/26/2022 12:00:00 AM	NK-TS	1937462	8
+
+//LATEST: 1110D327	12/15/2021 12:00:00 AM	NK-IDAS	326786	1
+//MIN: 1110D327	12/15/2021 12:00:00 AM	NK-IDAS	326786	1
+
+
+
+
+
+

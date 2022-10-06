@@ -1,0 +1,61 @@
+﻿	DEFINE 
+		MEASURE FACT_Sales[TotalSales]=SUM(FACT_Sales[Thành tiền])
+		MEASURE FACT_Sales[TotalQty]=SUM(FACT_Sales[Số lượng])
+		-- Group Tổng sales cho khách hàng
+		VAR GroupCustomerSales =
+			GROUPBY(FACT_Sales,
+				FACT_Sales[ID Khách hàng],FACT_Sales[Month],
+					"Total Sales", SUMX(CURRENTGROUP(),FACT_Sales[Thành tiền]))
+		TABLE Top100MCustomerSales=FILTER('Group Total Sales','Group Total Sales'[Total Sales Month]>=50000000)
+		VAR GroupAverageSales=
+			GROUPBY(Top100MCustomerSales,
+				Top100MCustomerSales[Month],
+				"Average Sales",AVERAGEX(CURRENTGROUP(),Top100MCustomerSales[Total Sales Month]))
+	EVALUATE
+		GroupAverageSales
+
+		
+//		VAR GroupMedianSales
+//			GROUPBY('Group Total Sales',
+//				"Median Sales",MEDIANX(CURRENTGROUP(),'Group Total Sales'[Total Sales Month]))
+	
+		
+
+		
+
+//	EVALUATE
+//		GroupAverageSales
+
+	
+//	DEFINE
+//		COLUMN Data_PriceLatest[Discount %] = ROUND(100*DIVIDE(1-Data_PriceLatest[Giá giảm gần đây],Data_PriceLatest[Đơn giá bán gần đây],0),2)
+//	
+//	EVALUATE
+//	FILTER(
+//		ADDCOLUMNS(
+//			SUMMARIZE(FACT_Sales,
+//				FACT_Sales[ID Khách hàng],
+//				DIM_Date[Date]),
+//				"TotalQty", FACT_Sales[TotalQty],
+//				"TotalSales", FACT_Sales[TotalSales]
+//		),
+//		AND(
+//			AND(
+//				FACT_Sales[TotalQty]>20,
+//				FACT_Sales[TotalSales]>=200000000),
+//			AND(
+//				DIM_Date[Date]>=DATE(2022,01,01),
+//				DIM_Date[Date] <= DATE(2022,09,22))))
+//ORDER BY 
+//		FACT_Sales[TotalSales] DESC
+//	
+//	EVALUATE
+//	SUMMARIZECOLUMNS(
+//		FACT_Sales[ID Khách hàng],
+//		"Total Sales Amount",FACT_Sales[TotalSales]
+//	)
+//	ORDER BY 
+//		FACT_Sales[TotalSales] DESC
+//	309,200,000
+
+
